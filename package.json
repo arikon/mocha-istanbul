@@ -1,0 +1,23 @@
+{
+  "name": "mocha-istanbul",
+  "version": "0.0.0",
+  "description": "Istanbul code coverage reporter for Mocha",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "istanbul": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arikon/mocha-istanbul.git"
+  },
+  "keywords": [
+    "mocha",
+    "istanbul",
+    "test",
+    "coverage"
+  ],
+  "author": "Sergey Belov <arikon@yandex-team.ru>",
+  "license": "MIT"
+}
