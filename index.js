@@ -18,12 +18,19 @@ function Istanbul(runner) {
 
     runner.on('end', function(){
 
+        var reporters;
+        if (process.env.ISTANBUL_REPORTERS) {
+            reporters = process.env.ISTANBUL_REPORTERS.split(',');
+        } else {
+            reporters = ['text-summary', 'html'];
+        }
+
         var cov = global.__coverage__ || {},
             collector = new Collector();
 
         collector.add(cov);
 
-        ['text-summary', 'html'].forEach(function(reporter) {
+        reporters.forEach(function(reporter) {
             Report.create(reporter).writeReport(collector, true);
         });
 
