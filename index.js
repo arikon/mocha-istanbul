@@ -25,6 +25,12 @@ function Istanbul(runner) {
             reporters = ['text-summary', 'html'];
         }
 
+        var reportDir = process.env.ISTANBUL_REPORT_DIR;
+        var opts = {};
+        if (reportDir) {
+            opts.dir = reportDir;
+        }
+        
         var cov = global.__coverage__ || {},
             collector = new Collector();
 
