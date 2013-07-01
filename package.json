@@ -1,16 +1,13 @@
 {
-  "name": "mocha-istanbul",
-  "version": "0.1.0",
-  "description": "Istanbul code coverage reporter for Mocha",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "name": "grunt-mocha-istanbul",
+  "version": "0.0.1",
+  "description": "Istanbul code coverage reporter for Mocha usage in Grunt",
   "dependencies": {
     "istanbul": "*"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/arikon/mocha-istanbul.git"
+    "url": "git://github.com/pocesar/grunt-mocha-istanbul.git"
   },
   "keywords": [
     "mocha",
