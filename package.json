@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "Istanbul code coverage reporter for Mocha usage in Grunt",
   "peerDependencies": {
-    "grunt": ">=4.0.x",
+    "grunt": "0.4.x",
     "mocha": "*"
   },
   "dependencies": {
