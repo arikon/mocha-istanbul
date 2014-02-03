@@ -1,7 +1,11 @@
 {
   "name": "grunt-mocha-istanbul",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Istanbul code coverage reporter for Mocha usage in Grunt",
+  "peerDependencies": {
+    "grunt": ">=4.0.0",
+    "mocha":"*"
+  },
   "dependencies": {
     "istanbul": "*"
   },
@@ -15,6 +19,6 @@
     "test",
     "coverage"
   ],
-  "author": "Sergey Belov <arikon@yandex-team.ru>",
+  "main":"index.js",
   "license": "MIT"
 }
