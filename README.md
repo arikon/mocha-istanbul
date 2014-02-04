@@ -79,15 +79,23 @@ Coverage event
 When you set the option `coverage` to `true`, you'll receive the `coverage/lcov.info` file contents:
 
 ```js
-grunt.event.on('coverage', function(lcov){
+grunt.event.on('coverage', function(lcov, done){
     console.log(lcov);
+    done(); // or done(false); in case of error
 });
 ```
 
 This is mainly useful so you can send it to, for example, coveralls (using [coveralls](https://github.com/cainus/node-coveralls)):
 
 ```js
-grunt.event.on('coverage', require('coveralls').handleInput);
+grunt.event.on('coverage', function(lcov, done){
+    require('coveralls').handleInput(lcov, function(err){
+        if (err) {
+            return done(err);
+        }
+        done();
+    });
+});
 ```
 
 This way, Travis-CI can send the Istanbul generated LCOV directly to Coveralls.io website.

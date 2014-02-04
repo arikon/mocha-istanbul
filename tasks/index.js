@@ -101,11 +101,11 @@ module.exports = function(grunt) {
         }
         if (options.coverage) {
           var coverage = grunt.file.read(path.join(process.cwd(), 'coverage', 'lcov.info'));
-          grunt.event.emit('coverage', coverage);
+          grunt.event.emit('coverage', coverage, done);
+        } else {
+          grunt.log.ok('Done. Check coverage folder.');
+          done();
         }
-
-        grunt.log.ok('Done. Check coverage folder.');
-        done();
       });
     } else {
       grunt.log.ok('Would execute: ', 'node ' + args.join(' '));
