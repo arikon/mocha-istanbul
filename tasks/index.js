@@ -20,7 +20,8 @@ module.exports = function(grunt) {
         slow: false,
         grep: false,
         dryRun: false,
-        quiet: false
+        quiet: false,
+        recursive: false
       }),
       done = this.async(),
       cmd = 'node',
@@ -78,6 +79,9 @@ module.exports = function(grunt) {
     if (options.grep) {
       args.push('--grep');
       args.push(options.grep);
+    }
+    if (options.recursive) {
+      args.push('--recursive');
     }
 
     args.push(this.filesSrc[0]);
