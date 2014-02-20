@@ -24,6 +24,7 @@ module.exports = function(grunt){
             coverage: {
                 src: 'test', // the folder, not the files,
                 options: {
+                    mask: '*.spec.js'
                 }
             },
             coveralls: {
@@ -35,7 +36,10 @@ module.exports = function(grunt){
         }
     });
 
-    grunt.event.on('coverage', require('coveralls').handleInput); // Check below
+    grunt.event.on('coverage', function(lcovFileContents, done){
+        // Check below
+        done();
+    });
 
     grunt.loadNpmTasks('grunt-mocha-istanbul');
 
@@ -51,25 +55,30 @@ Coverage is written to `coverage` folder, in the same level as the `Gruntfile.js
 Options
 ==============
 
-##### _Array_ options.require (default: [])
-##### _Boolean_ options.ui (default: false)
-##### _Array_ options.globals (default: [])
-##### _String_ options.reporter (default: false)
-##### _Number_ options.timeout (default: false)
-##### _Boolean_ options.slow (default: false)
-##### _String_ options.grep (default: false)
+##### _Array_ options.require (default: `[]`)
+##### _Boolean_ options.ui (default: `false`)
+##### _Array_ options.globals (default: `[]`)
+##### _String_ options.reporter (default: `false`)
+##### _Number_ options.timeout (default: `false`)
+##### _Boolean_ options.slow (default: `false`)
+##### _String_ options.grep (default: `false`)
+##### _Boolean_ options.recursive (default: `false`)
 
 Mochas parameters, check [http://visionmedia.github.io/mocha/#usage]
 
-##### _Boolean_ options.coverage (default: false)
+##### _Boolean_ options.coverage (default: `false`)
 
 Emits a grunt event 'coverage', that will contain the lcov data from the file
 
-##### _Boolean_ options.dryRun (default: false)
+##### _Boolean_ options.dryRun (default: `false`)
 
 Spits out the command line that would be called, just to make sure everything is alright
 
-##### _Boolean_ options.quiet (default: false)
+##### _String_ options.mask (default: `false`)
+
+The mask for the tests to be ran. By default, mocha will execute the `test` folder and all test files
+
+##### _Boolean_ options.quiet (default: `false`)
 
 Suppresses the output from Mocha and Istanbul
 

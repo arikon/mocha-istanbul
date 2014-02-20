@@ -21,7 +21,8 @@ module.exports = function(grunt) {
         grep: false,
         dryRun: false,
         quiet: false,
-        recursive: false
+        recursive: false,
+        mask: false
       }),
       done = this.async(),
       cmd = 'node',
@@ -42,7 +43,8 @@ module.exports = function(grunt) {
           options.reporter ||
           options.timeout ||
           options.slow ||
-          options.grep
+          options.grep ||
+          options.mask
         ) {
         grunt.log.error('Warning: mocha.opts exists, but overwriting with options');
       }
@@ -84,7 +86,13 @@ module.exports = function(grunt) {
       args.push('--recursive');
     }
 
-    args.push(this.filesSrc[0]);
+    var masked = this.filesSrc[0];
+
+    if (options.mask) {
+      masked = path.join(this.filesSrc[0], options.mask);
+    }
+
+    args.push(masked);
 
     grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
 

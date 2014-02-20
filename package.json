@@ -1,6 +1,6 @@
 {
   "name": "grunt-mocha-istanbul",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Istanbul code coverage reporter for Mocha usage in Grunt",
   "peerDependencies": {
     "grunt": "0.4.x",
