@@ -33,6 +33,12 @@ module.exports = function(grunt){
                     coverage:true
                 }
             }
+        },
+        mocha_istanbul_check: {
+           options: {
+                lines: 75,
+                statements: 75
+           }
         }
     });
 
@@ -45,12 +51,15 @@ module.exports = function(grunt){
 
     grunt.registerTask('coveralls', ['mocha_istanbul:coveralls']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
+    grunt.registerTask('check-coverage', ['mocha_istanbul_check']);
 };
 ```
 
 If there's a `mocha.opts` file inside the `src`, it will warn if you are overwritting any options.
 
 Coverage is written to `coverage` folder, in the same level as the `Gruntfile.js`
+
+The `mocha_istanbul_check` task will fail the build if the thresholds are not met. It's a great possibility for CI-builds.
 
 Options
 ==============
