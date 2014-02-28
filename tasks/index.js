@@ -1,9 +1,9 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   'use strict';
 
   var path = require('path');
 
-  grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function(){
+  grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function () {
     if (!this.filesSrc.length || !grunt.file.isDir(this.filesSrc[0])) {
       grunt.fail.fatal('Missing src attribute with the folder with tests');
       return;
@@ -30,14 +30,14 @@ module.exports = function(grunt) {
       dir = path.join(__dirname, '..'),
       modules = path.join(dir, 'node_modules');
 
-    args.push(path.join(modules, 'istanbul','lib','cli.js'));                       // node ./node_modules/istanbul/lib/cli.js
+    args.push(path.join(modules, 'istanbul', 'lib', 'cli.js'));                       // node ./node_modules/istanbul/lib/cli.js
     args.push('cover');                                                             // node ./node_modules/istanbul/lib/cli.js cover
-    args.push(path.join(process.cwd(), 'node_modules', 'mocha', 'bin','_mocha'));   // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
+    args.push(path.join(process.cwd(), 'node_modules', 'mocha', 'bin', '_mocha'));   // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
     args.push('--');                                                                // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --
 
-    if (grunt.file.exists(path.join(process.cwd(), this.filesSrc[0], 'mocha.opts'))){
+    if (grunt.file.exists(path.join(process.cwd(), this.filesSrc[0], 'mocha.opts'))) {
       if (
-          options.require.length ||
+        options.require.length ||
           options.globals.length ||
           options.ui ||
           options.reporter ||
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
     }
 
     if (options.require) {
-      options.require.forEach(function(require){
+      options.require.forEach(function (require) {
         args.push('--require');
         args.push(require);
       });
@@ -105,7 +105,7 @@ module.exports = function(grunt) {
           cwd: process.cwd(),
           stdio: options.quiet ? 'ignore' : 'inherit'
         }
-      }, function(err, result){
+      }, function (err, result) {
         if (err) {
           grunt.log.error(result);
           done(false);
@@ -123,6 +123,43 @@ module.exports = function(grunt) {
       grunt.log.ok('Would execute: ', 'node ' + args.join(' '));
       done();
     }
+
+  });
+
+  grunt.registerTask('mocha_istanbul_check', 'Check that line caverag is above a given threshold', function () {
+    var options = this.options({
+        threshold: 75
+      }),
+      done = this.async(),
+      cmd = 'node',
+      args = [],
+      dir = path.join(__dirname, '..'),
+      modules = path.join(dir, 'node_modules');
+
+    args.push(path.join(modules, 'istanbul', 'lib', 'cli.js'));                       // node ./node_modules/istanbul/lib/cli.js
+    args.push('check-coverage');                                                             // node ./node_modules/istanbul/lib/cli.js cover
+    args.push('--lines');   // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
+    args.push(options.threshold);   // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
+
+    grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
+
+    var _mocha = grunt.util.spawn({
+      cmd: cmd,
+      args: args,
+      opts: {
+        env: process.env,
+        cwd: process.cwd(),
+        stdio: 'inherit'
+      }
+    }, function (err, result) {
+      if (err) {
+        grunt.log.error(result);
+        done(false);
+        return;
+      }
+      grunt.log.ok('Done. Coverage succeeded.');
+      done();
+    });
 
   });
 };
