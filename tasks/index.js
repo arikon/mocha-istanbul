@@ -128,7 +128,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('mocha_istanbul_check', 'Check that line caverag is above a given threshold', function () {
     var options = this.options({
-        threshold: 75
+        statements: 75,
+        lines: 75
       }),
       done = this.async(),
       cmd = 'node',
@@ -136,10 +137,12 @@ module.exports = function (grunt) {
       dir = path.join(__dirname, '..'),
       modules = path.join(dir, 'node_modules');
 
-    args.push(path.join(modules, 'istanbul', 'lib', 'cli.js'));                       // node ./node_modules/istanbul/lib/cli.js
-    args.push('check-coverage');                                                             // node ./node_modules/istanbul/lib/cli.js cover
-    args.push('--lines');   // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
-    args.push(options.threshold);   // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
+    args.push(path.join(modules, 'istanbul', 'lib', 'cli.js'));
+    args.push('check-coverage');
+    args.push('--lines');
+    args.push(options.lines);
+    args.push('--statements');
+    args.push(options.statements);
 
     grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
 
