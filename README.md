@@ -1,3 +1,6 @@
+[![NPM](https://nodei.co/npm/grunt-mocha-istanbul.png?downloads=true&stars=true)](https://nodei.co/npm/grunt-mocha-istanbul/)
+[![Dependency Status](https://david-dm.org/pocesar/grunt-mocha-istanbul.png?theme=shields.io)](https://david-dm.org/pocesar/grunt-mocha-istanbul)
+
 grunt mocha istanbul task
 ==============
 
@@ -10,6 +13,12 @@ Install
 1. Install it using `npm install grunt-mocha-istanbul --save-dev`
 2. It needs `mocha` and `grunt` to be installed locally on your project (aka, having them in your devDependencies)
 3. Call inside Gruntfile.js `grunt.loadNpmTasks('grunt-mocha-istanbul')`
+
+Changes from 0.2.0
+==============
+
+* `mocha_istanbul_check` was removed and became part of the options under the `check` object
+
 
 Options
 ==============
@@ -30,15 +39,13 @@ module.exports = function(grunt){
             coveralls: {
                 src: 'test', // the folder, not the files
                 options: {
-                    coverage:true
+                    coverage:true,
+                    check: {
+                        lines: 75,
+                        statements: 75
+                    }
                 }
             }
-        },
-        mocha_istanbul_check: {
-           options: {
-                lines: 75,
-                statements: 75
-           }
         }
     });
 
@@ -51,15 +58,14 @@ module.exports = function(grunt){
 
     grunt.registerTask('coveralls', ['mocha_istanbul:coveralls']);
     grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
-    grunt.registerTask('check-coverage', ['mocha_istanbul_check']);
 };
 ```
 
 If there's a `mocha.opts` file inside the `src`, it will warn if you are overwritting any options.
 
-Coverage is written to `coverage` folder, in the same level as the `Gruntfile.js`
+Coverage is written to `coverage` folder by default, in the same level as the `Gruntfile.js`
 
-The `mocha_istanbul_check` task will fail the build if the thresholds are not met. It's a great possibility for CI-builds.
+The `check` will fail the build if the thresholds are not met. It's a great possibility for CI-builds.
 
 Options
 ==============
@@ -90,6 +96,26 @@ The mask for the tests to be ran. By default, mocha will execute the `test` fold
 ##### _Boolean_ `options.quiet` (default: `false`)
 
 Suppresses the output from Mocha and Istanbul
+
+##### _String_ `options.coverageFolder` (default: `coverage`)
+
+Name of the output of the coverage folder
+
+##### _Number_ `options.check.statements` (default: `false`)
+
+Number of statements threshold to consider the coverage valid
+
+##### _Number_ `options.check.lines` (default: `false`)
+
+Number of lines threshold to consider the coverage valid
+
+##### _Number_ `options.check.branches` (default: `false`)
+
+Number of branches threshold to consider the coverage valid
+
+##### _Number_ `options.check.functions` (default: `false`)
+
+Number of functions threshold to consider the coverage valid
 
 Coverage event
 ==============

@@ -1,6 +1,6 @@
 {
   "name": "grunt-mocha-istanbul",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Istanbul code coverage reporter for Mocha usage in Grunt",
   "peerDependencies": {
     "grunt": "0.4.x",
@@ -20,6 +20,6 @@
     "coverage",
     "coveralls"
   ],
-  "main":"index.js",
+  "main":"tasks/index.js",
   "license": "MIT"
 }
