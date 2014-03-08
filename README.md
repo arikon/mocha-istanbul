@@ -102,6 +102,10 @@ Suppresses the output from Mocha and Istanbul
 
 Name of the output of the coverage folder
 
+##### _String_ `options.root` (default: `coverage`)
+
+The root path to look for files to instrument, defaults to ```.```. Can help to exclude directories that are not part of the code whose coverage should be checked.
+
 ##### _Number_ `options.check.statements` (default: `false`)
 
 Number of statements threshold to consider the coverage valid

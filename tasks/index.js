@@ -27,6 +27,7 @@ module.exports = function (grunt) {
         recursive: false,
         mask: false,
         coverageFolder: 'coverage',
+        root: false,
         check: {
           statements: false,
           lines: false,
@@ -35,6 +36,7 @@ module.exports = function (grunt) {
         }
       }),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
+      rootFolderForCoverage = options.root ? path.join(process.cwd(), options.root) : '.',
       done = this.async(),
       cmd = 'node',
       args = [];
@@ -43,7 +45,7 @@ module.exports = function (grunt) {
       var args = [], check = options.check;
 
       if (
-          check.statements !== false ||
+        check.statements !== false ||
           check.lines !== false ||
           check.functions !== false ||
           check.branches !== false
@@ -101,6 +103,11 @@ module.exports = function (grunt) {
 
     args.push(istanbulPath);              // node ./node_modules/istanbul/lib/cli.js
     args.push('--dir=' + coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
+    if (options.root) {
+      args.push('--root=' + rootFolderForCoverage);
+    }
+
+
     args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
     args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
     args.push('--');                      // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --
