@@ -4,13 +4,16 @@ module.exports = function(grunt){
       target: {
         src: 'test',
         options: {
-          coverageFolder: 'lcov',
+          //coverageFolder: 'lcov',
           coverage: true,
           //dryRun: true,
+          //root: './test',
+          root: './tasks',
           check: {
-            lines: 20
+            lines: 1
           },
-          reporter: 'spec'
+          reporter: 'spec',
+          reportFormats: ['cobertura','lcovonly']
         }
       }
     }

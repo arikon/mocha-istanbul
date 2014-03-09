@@ -44,7 +44,9 @@ module.exports = function(grunt){
                     check: {
                         lines: 75,
                         statements: 75
-                    }
+                    },
+                    root: './lib', // define where the cover task should consider the root of libraries that are covered by tests
+                    reportFormats: ['','lcovonly']
                 }
             }
         }
@@ -84,7 +86,9 @@ Mochas parameters, check [http://visionmedia.github.io/mocha/#usage]
 
 ##### _Boolean_ `options.coverage` (default: `false`)
 
-Emits a grunt event 'coverage', that will contain the lcov data from the file
+Setting this to true makes the task emit a grunt event `coverage`, that will contain the lcov data from
+the file, containing the following callback `function(lcovcontent, done)`, and you must manually call
+`done()` when you are finished, else the grunt task will hang. See more information below
 
 ##### _Boolean_ `options.dryRun` (default: `false`)
 
@@ -102,9 +106,28 @@ Suppresses the output from Mocha and Istanbul
 
 Name of the output of the coverage folder
 
-##### _String_ `options.root` (default: `coverage`)
+##### _Array_ `options.reportFormats` (default: `['lcov']`)
 
-The root path to look for files to instrument, defaults to ```.```. Can help to exclude directories that are not part of the code whose coverage should be checked.
+Name of report formats. You can specify more than one. If you intend to use the `coverage` option to
+`true` or do any checks, you must add: `['yourformat','lcovonly']`, since it's needed for the `lcov.info`
+file to be created.
+
+[Supported formats](https://github.com/gotwarlost/istanbul#the-report-command):
+
+```
+    html - produces a bunch of HTML files with annotated source code
+    lcovonly - produces an lcov.info file
+    lcov - produces html + lcov files. This is the default format
+    cobertura - produces a cobertura-coverage.xml file for easy Hudson integration
+    text-summary - produces a compact text summary of coverage, typically to console
+    text - produces a detailed text table with coverage for all files
+    teamcity - produces service messages to report code coverage to TeamCity
+```
+
+##### _String_ `options.root` (default: `false`)
+
+The root path to look for files to instrument, defaults to `.`. Can help to exclude directories that are not
+part of the code whose coverage should be checked.
 
 ##### _Number_ `options.check.statements` (default: `false`)
 
@@ -122,7 +145,7 @@ Number of branches threshold to consider the coverage valid
 
 Number of functions threshold to consider the coverage valid
 
-Coverage event
+The coverage event
 ==============
 
 When you set the option `coverage` to `true`, you'll receive the `coverage/lcov.info` file contents:
@@ -147,4 +170,5 @@ grunt.event.on('coverage', function(lcov, done){
 });
 ```
 
-This way, Travis-CI can send the Istanbul generated LCOV directly to Coveralls.io website.
+This way, Travis-CI can send the Istanbul generated LCOV directly to Coveralls.io website in this example, but you could
+create any transform for Jenkins, TeamCity, Hudson, etc.

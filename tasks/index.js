@@ -26,8 +26,9 @@ module.exports = function (grunt) {
         quiet: false,
         recursive: false,
         mask: false,
-        coverageFolder: 'coverage',
         root: false,
+        coverageFolder: 'coverage',
+        reportFormats: ['lcov'],
         check: {
           statements: false,
           lines: false,
@@ -92,7 +93,7 @@ module.exports = function (grunt) {
 
           return;
         } else {
-          callback && callback(null, 'Would execute: node ' + args.join(' '));
+          callback && callback(null, 'Would also execute post cover: node ' + args.join(' '));
           return;
         }
       }
@@ -107,6 +108,9 @@ module.exports = function (grunt) {
       args.push('--root=' + rootFolderForCoverage);
     }
 
+    options.reportFormats.forEach(function(format){
+      args.push('--report=' + format);
+    });
 
     args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
     args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
@@ -114,7 +118,7 @@ module.exports = function (grunt) {
 
     if (grunt.file.exists(path.join(process.cwd(), this.filesSrc[0], 'mocha.opts'))) {
       if (
-        options.require.length ||
+          options.require.length ||
           options.globals.length ||
           options.ui ||
           options.reporter ||
@@ -159,6 +163,7 @@ module.exports = function (grunt) {
       args.push('--grep');
       args.push(options.grep);
     }
+
     if (options.recursive) {
       args.push('--recursive');
     }
@@ -171,7 +176,7 @@ module.exports = function (grunt) {
 
     args.push(masked);
 
-    grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
+    grunt.verbose.ok('Will execute:', 'node ' + args.join(' '));
 
     if (!options.dryRun) {
       grunt.util.spawn({
@@ -207,8 +212,10 @@ module.exports = function (grunt) {
         });
       });
     } else {
-      grunt.log.ok('Would execute: ', 'node ' + args.join(' '));
-      executeCheck();
+      executeCheck(function(err, would){
+        grunt.log.ok('Would execute:', 'node ' + args.join(' '));
+        would && grunt.log.ok(would);
+      });
 
       done();
     }
