@@ -129,6 +129,11 @@ file to be created.
 The root path to look for files to instrument, defaults to `.`. Can help to exclude directories that are not
 part of the code whose coverage should be checked.
 
+##### _String_ `options.print` (default: `false`)
+
+The type of report to print to console. Can be one of 'summary', 'detail', 'both', or 'none'. By
+default, Istanbul will print the 'summary' report.
+
 ##### _Number_ `options.check.statements` (default: `false`)
 
 Number of statements threshold to consider the coverage valid

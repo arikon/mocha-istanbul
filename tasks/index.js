@@ -27,6 +27,7 @@ module.exports = function (grunt) {
         recursive: false,
         mask: false,
         root: false,
+        print: false,
         coverageFolder: 'coverage',
         reportFormats: ['lcov'],
         check: {
@@ -106,6 +107,9 @@ module.exports = function (grunt) {
     args.push('--dir=' + coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
     if (options.root) {
       args.push('--root=' + rootFolderForCoverage);
+    }
+    if (options.print) {
+      args.push('--print=' + options.print);
     }
 
     options.reportFormats.forEach(function(format){
