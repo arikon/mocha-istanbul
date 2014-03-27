@@ -11,6 +11,6 @@
   "devel"   : true,
   "node"    : true,
   "sub"     : true,
-  "globals" : {"angular": true,"ChainCommander":true},
+  "globals" : {},
   "quotmark": "single"
 }
