@@ -9,6 +9,7 @@ module.exports = function(grunt){
           //dryRun: true,
           //root: './test',
           root: './tasks',
+          print: 'detail',
           check: {
             lines: 1
           },
