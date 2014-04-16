@@ -6,15 +6,16 @@ module.exports = function(grunt){
         options: {
           //coverageFolder: 'lcov',
           coverage: true,
-          //dryRun: true,
+          noColors: true,
+          dryRun: false,
           //root: './test',
-          root: './tasks',
+          //root: './tasks',
           print: 'detail',
           check: {
             lines: 1
           },
           reporter: 'spec',
-          reportFormats: ['cobertura','lcovonly']
+          reportFormats: ['lcovonly']
         }
       }
     }

@@ -28,6 +28,7 @@ module.exports = function (grunt) {
         mask: false,
         root: false,
         print: false,
+        noColors: false,
         coverageFolder: 'coverage',
         reportFormats: ['lcov'],
         check: {
@@ -129,7 +130,8 @@ module.exports = function (grunt) {
           options.timeout ||
           options.slow ||
           options.grep ||
-          options.mask
+          options.mask ||
+          options.noColors
         ) {
         grunt.log.error('Warning: mocha.opts exists, but overwriting with options');
       }
@@ -149,6 +151,9 @@ module.exports = function (grunt) {
     if (options.ui) {
       args.push('--ui');
       args.push(options.ui);
+    }
+    if (options.noColors) {
+      args.push('--no-colors');
     }
     if (options.reporter) {
       args.push('--reporter');

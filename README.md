@@ -46,7 +46,7 @@ module.exports = function(grunt){
                         statements: 75
                     },
                     root: './lib', // define where the cover task should consider the root of libraries that are covered by tests
-                    reportFormats: ['','lcovonly']
+                    reportFormats: ['cobertura','lcovonly']
                 }
             }
         }
@@ -81,6 +81,7 @@ Options
 ##### _Boolean_ `options.slow` (default: `false`)
 ##### _String_ `options.grep` (default: `false`)
 ##### _Boolean_ `options.recursive` (default: `false`)
+##### _Boolean_ `options.noColors` (default: `false`)
 
 Mochas parameters, check [http://visionmedia.github.io/mocha/#usage]
 
