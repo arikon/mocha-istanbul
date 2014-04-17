@@ -81,7 +81,7 @@ Options
 ##### _Boolean_ `options.slow` (default: `false`)
 ##### _String_ `options.grep` (default: `false`)
 ##### _Boolean_ `options.recursive` (default: `false`)
-
+##### _Array_ `options.mochaOptions` (default: `false`)
 Mochas parameters, check [http://visionmedia.github.io/mocha/#usage]
 
 ##### _Boolean_ `options.coverage` (default: `false`)
@@ -93,6 +93,10 @@ the file, containing the following callback `function(lcovcontent, done)`, and y
 ##### _Boolean_ `options.dryRun` (default: `false`)
 
 Spits out the command line that would be called, just to make sure everything is alright
+
+##### _Array_ `options.excludes` (default: `false`)
+
+Setting this exclude files from coverage report, check istanbul help cover
 
 ##### _String_ `options.mask` (default: `false`)
 

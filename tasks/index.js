@@ -37,7 +37,7 @@ module.exports = function (grunt) {
           branches: false
         },
         excludes: false,
-        mochaOption : false
+        mochaOptions : false
       }),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
       rootFolderForCoverage = options.root ? path.join(process.cwd(), options.root) : '.',
@@ -187,8 +187,8 @@ module.exports = function (grunt) {
     if (options.mask) {
       masked = path.join(this.filesSrc[0], options.mask);
     }
-    if (options.mochaOption) {
-        options.mochaOption.forEach (function (opt){
+    if (options.mochaOptions) {
+        options.mochaOptions.forEach (function (opt){
             args.push(opt);
         });
     }
