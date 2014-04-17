@@ -35,7 +35,9 @@ module.exports = function (grunt) {
           lines: false,
           functions: false,
           branches: false
-        }
+        },
+        excludes: false,
+        mochaOption : false
       }),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
       rootFolderForCoverage = options.root ? path.join(process.cwd(), options.root) : '.',
@@ -48,9 +50,9 @@ module.exports = function (grunt) {
 
       if (
         check.statements !== false ||
-          check.lines !== false ||
-          check.functions !== false ||
-          check.branches !== false
+        check.lines !== false ||
+        check.functions !== false ||
+        check.branches !== false
         ) {
         args.push(istanbulPath);
         args.push('check-coverage');
@@ -104,6 +106,14 @@ module.exports = function (grunt) {
 
 
     args.push(istanbulPath);              // node ./node_modules/istanbul/lib/cli.js
+    args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
+    if (options.excludes) {
+        options.excludes.forEach(function(excludes){
+          args.push('-x')
+          args.push(excludes);
+       });
+    }
+
     args.push('--dir=' + coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
     if (options.root) {
       args.push('--root=' + rootFolderForCoverage);
@@ -116,7 +126,7 @@ module.exports = function (grunt) {
       args.push('--report=' + format);
     });
 
-    args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
+
     args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
     args.push('--');                      // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --
 
@@ -177,7 +187,11 @@ module.exports = function (grunt) {
     if (options.mask) {
       masked = path.join(this.filesSrc[0], options.mask);
     }
-
+    if (options.mochaOption) {
+        options.mochaOption.forEach (function (opt){
+            args.push(opt);
+        });
+    }
     args.push(masked);
 
     grunt.verbose.ok('Will execute:', 'node ' + args.join(' '));
