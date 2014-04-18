@@ -1,27 +1,30 @@
-module.exports = function(grunt){
+module.exports = function (grunt){
   grunt.initConfig({
     mocha_istanbul: {
       target: {
-        src: 'test',
+        src    : 'test',
         options: {
           //coverageFolder: 'lcov',
-          coverage: true,
-          noColors: true,
-          dryRun: false,
+          coverage     : true,
+          noColors     : true,
+          dryRun       : false,
           //root: './test',
           //root: './tasks',
-          print: 'detail',
-          check: {
+          print        : 'detail',
+          check        : {
             lines: 1
           },
-          reporter: 'spec',
+          excludes: ['test/excluded*.js'],
+          mochaOptions: ['--bail','--debug-brk'],
+          istanbulOptions: ['--default-excludes'],
+          reporter     : 'spec',
           reportFormats: ['lcovonly']
         }
       }
     }
   });
 
-  grunt.event.on('coverage', function(content, done){
+  grunt.event.on('coverage', function (content, done){
     console.log(content.slice(0, 15) + '...');
     done();
   });

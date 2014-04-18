@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function (grunt){
   'use strict';
 
   var
@@ -6,7 +6,7 @@ module.exports = function (grunt) {
     mochaPath = require.resolve('mocha/bin/_mocha'),
     istanbulPath = require.resolve('istanbul/lib/cli');
 
-  grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function () {
+  grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
     if (!this.filesSrc.length || !grunt.file.isDir(this.filesSrc[0])) {
       grunt.fail.fatal('Missing src attribute with the folder with tests');
       return;
@@ -14,29 +14,32 @@ module.exports = function (grunt) {
 
     var
       options = this.options({
-        require: [],
-        ui: false,
-        globals: [],
-        reporter: false,
-        timeout: false,
-        coverage: false,
-        slow: false,
-        grep: false,
-        dryRun: false,
-        quiet: false,
-        recursive: false,
-        mask: false,
-        root: false,
-        print: false,
-        noColors: false,
-        coverageFolder: 'coverage',
-        reportFormats: ['lcov'],
-        check: {
+        require        : [],
+        ui             : false,
+        globals        : [],
+        reporter       : false,
+        timeout        : false,
+        coverage       : false,
+        slow           : false,
+        grep           : false,
+        dryRun         : false,
+        quiet          : false,
+        recursive      : false,
+        mask           : false,
+        root           : false,
+        print          : false,
+        noColors       : false,
+        coverageFolder : 'coverage',
+        reportFormats  : ['lcov'],
+        check          : {
           statements: false,
-          lines: false,
-          functions: false,
-          branches: false
-        }
+          lines     : false,
+          functions : false,
+          branches  : false
+        },
+        excludes       : false,
+        mochaOptions   : false,
+        istanbulOptions: false
       }),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
       rootFolderForCoverage = options.root ? path.join(process.cwd(), options.root) : '.',
@@ -49,10 +52,10 @@ module.exports = function (grunt) {
 
       if (
         check.statements !== false ||
-          check.lines !== false ||
-          check.functions !== false ||
-          check.branches !== false
-        ) {
+        check.lines !== false ||
+        check.functions !== false ||
+        check.branches !== false
+      ) {
         args.push(istanbulPath);
         args.push('check-coverage');
         if (check.lines) {
@@ -78,14 +81,14 @@ module.exports = function (grunt) {
 
         if (!options.dryRun) {
           grunt.util.spawn({
-            cmd: cmd,
+            cmd : cmd,
             args: args,
             opts: {
-              env: process.env,
-              cwd: process.cwd(),
+              env  : process.env,
+              cwd  : process.cwd(),
               stdio: options.quiet ? 'ignore' : 'inherit'
             }
-          }, function (err) {
+          }, function (err){
             if (err) {
               callback && callback(err);
               return;
@@ -103,8 +106,16 @@ module.exports = function (grunt) {
       callback && callback();
     }
 
-
     args.push(istanbulPath);              // node ./node_modules/istanbul/lib/cli.js
+    args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
+
+    if (options.excludes && options.excludes.length) {
+      grunt.file.expand({cwd: process.cwd()}, options.excludes).forEach(function(excluded){
+        args.push('-x');
+        args.push(excluded);
+      });
+    }
+
     args.push('--dir=' + coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
     if (options.root) {
       args.push('--root=' + rootFolderForCoverage);
@@ -113,26 +124,31 @@ module.exports = function (grunt) {
       args.push('--print=' + options.print);
     }
 
-    options.reportFormats.forEach(function(format){
+    options.reportFormats.forEach(function (format){
       args.push('--report=' + format);
     });
 
-    args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
+    if (options.istanbulOptions && options.istanbulOptions.length) {
+      options.istanbulOptions.forEach(function (opt){
+        args.push(opt);
+      });
+    }
+
     args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
     args.push('--');                      // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --
 
     if (grunt.file.exists(path.join(process.cwd(), this.filesSrc[0], 'mocha.opts'))) {
       if (
-          options.require.length ||
-          options.globals.length ||
-          options.ui ||
-          options.reporter ||
-          options.timeout ||
-          options.slow ||
-          options.grep ||
-          options.mask ||
-          options.noColors
-        ) {
+        options.require.length ||
+        options.globals.length ||
+        options.ui ||
+        options.reporter ||
+        options.timeout ||
+        options.slow ||
+        options.grep ||
+        options.mask ||
+        options.noColors
+      ) {
         grunt.log.error('Warning: mocha.opts exists, but overwriting with options');
       }
     }
@@ -143,7 +159,7 @@ module.exports = function (grunt) {
     }
 
     if (options.require) {
-      options.require.forEach(function (require) {
+      options.require.forEach(function (require){
         args.push('--require');
         args.push(require);
       });
@@ -183,31 +199,37 @@ module.exports = function (grunt) {
       masked = path.join(this.filesSrc[0], options.mask);
     }
 
+    if (options.mochaOptions && options.mochaOptions.length) {
+      options.mochaOptions.forEach(function (opt){
+        args.push(opt);
+      });
+    }
+
     args.push(masked);
 
     grunt.verbose.ok('Will execute:', 'node ' + args.join(' '));
 
     if (!options.dryRun) {
       grunt.util.spawn({
-        cmd: cmd,
+        cmd : cmd,
         args: args,
         opts: {
-          env: process.env,
-          cwd: process.cwd(),
+          env  : process.env,
+          cwd  : process.cwd(),
           stdio: options.quiet ? 'ignore' : 'inherit'
         }
-      }, function (err, result) {
+      }, function (err, result){
         if (err) {
           grunt.log.error(result);
           done(false);
           return;
         }
 
-        executeCheck(function(err, result){
+        executeCheck(function (err, result){
           if (!err) {
             if (options.coverage) {
               var coverage = grunt.file.read(path.join(coverageFolder, 'lcov.info'));
-              grunt.event.emit('coverage', coverage, function(d){
+              grunt.event.emit('coverage', coverage, function (d){
                 grunt.log.ok(result || 'Done. Check coverage folder.');
                 done(d);
               });
@@ -221,7 +243,7 @@ module.exports = function (grunt) {
         });
       });
     } else {
-      executeCheck(function(err, would){
+      executeCheck(function (err, would){
         grunt.log.ok('Would execute:', 'node ' + args.join(' '));
         would && grunt.log.ok(would);
       });

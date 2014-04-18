@@ -85,6 +85,14 @@ Options
 
 Mochas parameters, check [http://visionmedia.github.io/mocha/#usage]
 
+##### _Array_ `options.mochaOptions` (default: `false`)
+
+Any additional mocha parameters, manually set
+
+##### _Array_ `options.istanbulOptions` (default: `false`)
+
+Any additional istanbul parameters, manually set
+
 ##### _Boolean_ `options.coverage` (default: `false`)
 
 Setting this to true makes the task emit a grunt event `coverage`, that will contain the lcov data from
@@ -94,6 +102,10 @@ the file, containing the following callback `function(lcovcontent, done)`, and y
 ##### _Boolean_ `options.dryRun` (default: `false`)
 
 Spits out the command line that would be called, just to make sure everything is alright
+
+##### _Array_ `options.excludes` (default: `false`)
+
+Setting this exclude files from coverage report, check `istanbul help cover`. You may use glob matching in here.
 
 ##### _String_ `options.mask` (default: `false`)
 
