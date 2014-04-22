@@ -110,7 +110,7 @@ module.exports = function (grunt){
     args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
 
     if (options.excludes && options.excludes.length) {
-      grunt.file.expand({cwd: process.cwd()}, options.excludes).forEach(function(excluded){
+      options.excludes.forEach(function(excluded){
         args.push('-x');
         args.push(excluded);
       });
