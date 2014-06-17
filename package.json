@@ -15,7 +15,7 @@
   },
   "keywords"        : [
     "grunt",
-    "grunt-plugin",
+    "gruntplugin",
     "mocha",
     "istanbul",
     "test",
