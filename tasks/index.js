@@ -29,6 +29,7 @@ module.exports = function (grunt){
         root           : false,
         print          : false,
         noColors       : false,
+        harmony        : false,
         coverageFolder : 'coverage',
         reportFormats  : ['lcov'],
         check          : {
@@ -46,6 +47,10 @@ module.exports = function (grunt){
       done = this.async(),
       cmd = 'node',
       args = [];
+
+    if (options.harmony) {
+      args.push('--harmony');
+    }
 
     function executeCheck(callback){
       var args = [], check = options.check;
@@ -108,6 +113,11 @@ module.exports = function (grunt){
 
     args.push(istanbulPath);              // node ./node_modules/istanbul/lib/cli.js
     args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
+
+    if (typeof options.require === 'string') {
+      options.require = [options.require];
+    }
+
 
     if (options.excludes && options.excludes.length) {
       options.excludes.forEach(function(excluded){
