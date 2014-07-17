@@ -12,8 +12,14 @@ Install
 ==============
 
 1. Install it using `npm install grunt-mocha-istanbul --save-dev`
-2. It needs `mocha` and `grunt` to be installed locally on your project (aka, having them in your devDependencies)
+2. It needs `mocha`, `grunt` and `istanbul` to be installed locally on your project (aka, having them in your devDependencies)
 3. Call inside Gruntfile.js `grunt.loadNpmTasks('grunt-mocha-istanbul')`
+
+Changes from 1.x
+==============
+
+Since Istanbul has 2 versions (ES5 and ES6/harmony), it's up to you to install the desired version of Istanbul, 
+it's now defined as a a peer dependency.
 
 Changes from 0.2.0
 ==============

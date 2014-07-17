@@ -3,10 +3,24 @@ module.exports = function (grunt){
 
   var
     path = require('path'),
-    mochaPath = require.resolve('mocha/bin/_mocha'),
-    istanbulPath = require.resolve('istanbul/lib/cli');
+    mochaPath,
+    istanbulPath;
 
   grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
+    try {
+      mochaPath = require.resolve('mocha/bin/_mocha');
+    } catch (e) {
+      grunt.log.error('Missing mocha peer dependency');
+      return;
+    }
+
+    try {
+      istanbulPath = require.resolve('istanbul/lib/cli');
+    } catch (e) {
+      grunt.log.error('Missing istanbul peer dependency');
+      return;
+    }
+    
     if (!this.filesSrc.length || !grunt.file.isDir(this.filesSrc[0])) {
       grunt.fail.fatal('Missing src attribute with the folder with tests');
       return;
