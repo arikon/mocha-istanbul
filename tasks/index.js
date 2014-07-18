@@ -20,7 +20,7 @@ module.exports = function (grunt){
       grunt.log.error('Missing istanbul peer dependency');
       return;
     }
-    
+
     if (!this.filesSrc.length || !grunt.file.isDir(this.filesSrc[0])) {
       grunt.fail.fatal('Missing src attribute with the folder with tests');
       return;
