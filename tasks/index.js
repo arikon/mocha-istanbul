@@ -6,6 +6,66 @@ module.exports = function (grunt){
     mochaPath,
     istanbulPath;
 
+  function executeCheck(callback, coverageFolder, options) {
+    var args = [], check = options.check;
+
+    if (
+      check.statements !== false ||
+      check.lines !== false ||
+      check.functions !== false ||
+      check.branches !== false
+      ) {
+      args.push(istanbulPath);
+      args.push('check-coverage');
+      if (check.lines) {
+        args.push('--lines');
+        args.push(check.lines);
+      }
+      if (check.statements) {
+        args.push('--statements');
+        args.push(check.statements);
+      }
+      if (check.functions) {
+        args.push('--functions');
+        args.push(check.functions);
+      }
+      if (check.branches) {
+        args.push('--branches');
+        args.push(check.branches);
+      }
+
+      args.push('--dir=' + coverageFolder);
+
+      grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
+
+      if (!options.dryRun) {
+        grunt.util.spawn({
+          cmd : cmd,
+          args: args,
+          opts: {
+            env  : process.env,
+            cwd  : process.cwd(),
+            stdio: options.quiet ? 'ignore' : 'inherit'
+          }
+        }, function (err){
+          if (err) {
+            callback && callback(err);
+            return;
+          }
+          callback && callback(null, 'Done. Minimum coverage threshold succeeded.');
+        });
+
+        return;
+      } else {
+        callback && callback(null, 'Would also execute post cover: node ' + args.join(' '));
+        return;
+      }
+    }
+
+    callback && callback();
+  }
+
+
   grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
     try {
       mochaPath = require.resolve('mocha/bin/_mocha');
@@ -64,65 +124,6 @@ module.exports = function (grunt){
 
     if (options.harmony) {
       args.push('--harmony');
-    }
-
-    function executeCheck(callback){
-      var args = [], check = options.check;
-
-      if (
-        check.statements !== false ||
-        check.lines !== false ||
-        check.functions !== false ||
-        check.branches !== false
-      ) {
-        args.push(istanbulPath);
-        args.push('check-coverage');
-        if (check.lines) {
-          args.push('--lines');
-          args.push(check.lines);
-        }
-        if (check.statements) {
-          args.push('--statements');
-          args.push(check.statements);
-        }
-        if (check.functions) {
-          args.push('--functions');
-          args.push(check.functions);
-        }
-        if (check.branches) {
-          args.push('--branches');
-          args.push(check.branches);
-        }
-
-        args.push('--dir=' + coverageFolder);
-
-        grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
-
-        if (!options.dryRun) {
-          grunt.util.spawn({
-            cmd : cmd,
-            args: args,
-            opts: {
-              env  : process.env,
-              cwd  : process.cwd(),
-              stdio: options.quiet ? 'ignore' : 'inherit'
-            }
-          }, function (err){
-            if (err) {
-              callback && callback(err);
-              return;
-            }
-            callback && callback(null, 'Done. Minimum coverage threshold succeeded.');
-          });
-
-          return;
-        } else {
-          callback && callback(null, 'Would also execute post cover: node ' + args.join(' '));
-          return;
-        }
-      }
-
-      callback && callback();
     }
 
     args.push(istanbulPath);              // node ./node_modules/istanbul/lib/cli.js
@@ -249,11 +250,11 @@ module.exports = function (grunt){
           return;
         }
 
-        executeCheck(function (err, result){
+        executeCheck(function (err, result) {
           if (!err) {
             if (options.coverage) {
               var coverage = grunt.file.read(path.join(coverageFolder, 'lcov.info'));
-              grunt.event.emit('coverage', coverage, function (d){
+              grunt.event.emit('coverage', coverage, function (d) {
                 grunt.log.ok(result || 'Done. Check coverage folder.');
                 done(d);
               });
@@ -264,13 +265,13 @@ module.exports = function (grunt){
           } else {
             done(err);
           }
-        });
+        }, coverageFolder, options);
       });
     } else {
-      executeCheck(function (err, would){
+      executeCheck(function (err, would) {
         grunt.log.ok('Would execute:', 'node ' + args.join(' '));
         would && grunt.log.ok(would);
-      });
+      }, coverageFolder, options);
 
       done();
     }
