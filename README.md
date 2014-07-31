@@ -21,6 +21,8 @@ Changes from 1.x
 Since Istanbul has 2 versions (ES5 and ES6/harmony), it's up to you to install the desired version of Istanbul, 
 it's now defined as a a peer dependency.
 
+Introduced new task `istanbul_check_coverage` to enable coverage checking on more than one test run. See below for example. 
+
 Changes from 0.2.0
 ==============
 
@@ -43,6 +45,13 @@ module.exports = function(grunt){
                     mask: '*.spec.js'
                 }
             },
+            coverageSpecial: {
+                src: 'testSpecial', // the folder, not the files,
+                options: {
+                    coverageFolder: 'coverageSpecial',
+                    mask: '*.spec.js'
+                }
+            },
             coveralls: {
                 src: 'test', // the folder, not the files
                 options: {
@@ -55,7 +64,19 @@ module.exports = function(grunt){
                     reportFormats: ['cobertura','lcovonly']
                 }
             }
+        },
+        istanbul_check_coverage: {
+          default: {
+            options: {
+              coverageFolder: 'coverage*', // will check both coverage folders and merge the coverage results
+              check: {
+                lines: 80,
+                statements: 80
+              }
+            }
+          }
         }
+
     });
 
     grunt.event.on('coverage', function(lcovFileContents, done){
@@ -70,7 +91,7 @@ module.exports = function(grunt){
 };
 ```
 
-If there's a `mocha.opts` file inside the `src`, it will warn if you are overwritting any options.
+If there's a `mocha.opts` file inside the `src`, it will warn if you are overwriting any options.
 
 Coverage is written to `coverage` folder by default, in the same level as the `Gruntfile.js`
 
