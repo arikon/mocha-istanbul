@@ -80,6 +80,33 @@ module.exports = function (grunt){
     callback && callback();
   }
 
+  grunt.registerMultiTask('istanbul_check_coverage', 'Solo task for checking coverage over different or many files.', function () {
+    var
+      done = this.async(),
+      options = this.options({
+        coverageFolder: 'coverage',
+        check: {
+          statements: false,
+          lines: false,
+          functions: false,
+          branches: false
+        }
+      });
+
+    executeCheck(function (err, result) {
+      if (err) { return done(err); }
+      if (options.coverage) {
+        var coverage = grunt.file.read(path.join(coverageFolder, 'lcov.info'));
+        return grunt.event.emit('coverage', coverage, function (d) {
+          grunt.log.ok(result || 'Done. Check coverage folder.');
+          done(d);
+        });
+      }
+      grunt.log.ok(result || 'Done. Check coverage folder.');
+      done();
+    }, options.coverageFolder, options)
+  });
+
   grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
     if (!this.filesSrc.length || !grunt.file.isDir(this.filesSrc[0])) {
       grunt.fail.fatal('Missing src attribute with the folder with tests');
