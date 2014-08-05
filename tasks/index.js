@@ -49,7 +49,7 @@ module.exports = function (grunt){
         args.push(check.branches);
       }
 
-      args.push('--dir=' + coverageFolder);
+      args.push(coverageFolder + '/coverage*.json');
 
       grunt.verbose.ok('Will execute: ', 'node ' + args.join(' '));
 
