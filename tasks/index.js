@@ -109,7 +109,7 @@ module.exports = function (grunt){
 
   grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
     if (!this.filesSrc.length) {
-      grunt.fail.fatal('Missing src attribute with the folder with tests');
+      grunt.log.error('No test files to run');
       return;
     }
 
