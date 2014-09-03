@@ -40,20 +40,20 @@ module.exports = function(grunt){
     grunt.initConfig({
         mocha_istanbul: {
             coverage: {
-                src: 'test', // the folder, not the files,
+                src: 'test', // a folder works nicely
                 options: {
                     mask: '*.spec.js'
                 }
             },
             coverageSpecial: {
-                src: 'testSpecial', // the folder, not the files,
+                src: ['testSpecial/*/*.js', 'testUnique/*/*.js'], // specifying file patterns works as well
                 options: {
                     coverageFolder: 'coverageSpecial',
                     mask: '*.spec.js'
                 }
             },
             coveralls: {
-                src: 'test', // the folder, not the files
+                src: ['test', 'testSpecial', 'testUnique'], // multiple folders also works
                 options: {
                     coverage:true,
                     check: {
@@ -91,7 +91,7 @@ module.exports = function(grunt){
 };
 ```
 
-If there's a `mocha.opts` file inside the `src`, it will warn if you are overwriting any options.
+If there's a `mocha.opts` file inside the first `src` folder or file defined, it will warn if you are overwriting any options.
 
 Coverage is written to `coverage` folder by default, in the same level as the `Gruntfile.js`
 
@@ -136,7 +136,7 @@ Setting this exclude files from coverage report, check `istanbul help cover`. Yo
 
 ##### _String_ `options.mask` (default: `false`)
 
-The mask for the tests to be ran. By default, mocha will execute the `test` folder and all test files
+The mask for the tests to be ran. By default, mocha will execute the `test` folder and all test files. Will override any files specified in `src` and instead use the mask on those files' folders.
 
 ##### _Boolean_ `options.quiet` (default: `false`)
 
