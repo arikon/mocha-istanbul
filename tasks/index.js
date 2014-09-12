@@ -108,8 +108,8 @@ module.exports = function (grunt){
   });
 
   grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
-    if (!this.filesSrc.length || !grunt.file.isDir(this.filesSrc[0])) {
-      grunt.fail.fatal('Missing src attribute with the folder with tests');
+    if (!this.filesSrc.length) {
+      grunt.log.error('No test files to run');
       return;
     }
 
@@ -143,6 +143,7 @@ module.exports = function (grunt){
         mochaOptions   : false,
         istanbulOptions: false
       }),
+      filesDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
       rootFolderForCoverage = options.root ? path.join(process.cwd(), options.root) : '.',
       done = this.async(),
@@ -188,7 +189,7 @@ module.exports = function (grunt){
     args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
     args.push('--');                      // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --
 
-    if (grunt.file.exists(path.join(process.cwd(), this.filesSrc[0], 'mocha.opts'))) {
+    if (grunt.file.exists(path.join(process.cwd(), filesDir, 'mocha.opts'))) {
       if (
         options.require.length ||
         options.globals.length ||
@@ -244,10 +245,12 @@ module.exports = function (grunt){
       args.push('--recursive');
     }
 
-    var masked = this.filesSrc[0];
+    var masked = this.filesSrc;
 
     if (options.mask) {
-      masked = path.join(this.filesSrc[0], options.mask);
+      masked = masked.map(function (file) {
+        return path.join(grunt.file.isDir(file) ? file : path.dirname(file), options.mask);
+      });
     }
 
     if (options.mochaOptions && options.mochaOptions.length) {
@@ -256,7 +259,7 @@ module.exports = function (grunt){
       });
     }
 
-    args.push(masked);
+    args = args.concat(masked);
 
     grunt.verbose.ok('Will execute:', 'node ' + args.join(' '));
 
