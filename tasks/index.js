@@ -30,7 +30,7 @@ module.exports = function (grunt){
       check.functions !== false ||
       check.branches !== false
       ) {
-      args.push(istanbulPath);
+      args.push(options.scriptPath);
       args.push('check-coverage');
       if (check.lines) {
         args.push('--lines');
@@ -84,6 +84,7 @@ module.exports = function (grunt){
     var
       done = this.async(),
       options = this.options({
+        scriptPath: istanbulPath,
         coverageFolder: 'coverage',
         check: {
           statements: false,
@@ -141,7 +142,8 @@ module.exports = function (grunt){
         },
         excludes       : false,
         mochaOptions   : false,
-        istanbulOptions: false
+        istanbulOptions: false,
+        scriptPath     : istanbulPath
       }),
       filesDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
@@ -153,8 +155,8 @@ module.exports = function (grunt){
       args.push('--harmony');
     }
 
-    args.push(istanbulPath);              // node ./node_modules/istanbul/lib/cli.js
-    args.push('cover');                   // node ./node_modules/istanbul/lib/cli.js cover
+    args.push(options.scriptPath);              // ie. node ./node_modules/istanbul/lib/cli.js or another script name
+    args.push('cover');                   // node <scriptPath> cover
 
     if (typeof options.require === 'string') {
       options.require = [options.require];
