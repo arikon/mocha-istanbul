@@ -18,10 +18,10 @@ Install
 Changes from 1.x
 ==============
 
-Since Istanbul has 2 versions (ES5 and ES6/harmony), it's up to you to install the desired version of Istanbul, 
+Since Istanbul has 2 versions (ES5 and ES6/harmony), it's up to you to install the desired version of Istanbul,
 it's now defined as a a peer dependency.
 
-Introduced new task `istanbul_check_coverage` to enable coverage checking on more than one test run. See below for example. 
+Introduced new task `istanbul_check_coverage` to enable coverage checking on more than one test run. See below for example.
 
 Changes from 0.2.0
 ==============
@@ -119,6 +119,10 @@ Any additional mocha parameters, manually set
 ##### _Array_ `options.istanbulOptions` (default: `false`)
 
 Any additional istanbul parameters, manually set
+
+##### _String_ `options.scriptPath` (default: `istanbulPath`)
+
+Allows to override the default istanbul path to use another coverage library, such as [ibrik](https://www.npmjs.com/package/ibrik). Need to set the full path to the bin (script that accepts stdin arguments) and is compatible with `cover`.
 
 ##### _Boolean_ `options.coverage` (default: `false`)
 
