@@ -97,7 +97,7 @@ module.exports = function (grunt){
     executeCheck(function (err, result) {
       if (err) { return done(err); }
       if (options.coverage) {
-        var coverage = grunt.file.read(path.join(coverageFolder, 'lcov.info'));
+        var coverage = grunt.file.read(path.join(options.coverageFolder, 'lcov.info'));
         return grunt.event.emit('coverage', coverage, function (d) {
           grunt.log.ok(result || 'Done. Check coverage folder.');
           done(d);
@@ -105,7 +105,7 @@ module.exports = function (grunt){
       }
       grunt.log.ok(result || 'Done. Check coverage folder.');
       done();
-    }, options.coverageFolder, options)
+    }, options.coverageFolder, options);
   });
 
   grunt.registerMultiTask('mocha_istanbul', 'Generate coverage report with Istanbul from mocha test', function (){
