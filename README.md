@@ -49,13 +49,15 @@ module.exports = function(grunt){
                 src: ['testSpecial/*/*.js', 'testUnique/*/*.js'], // specifying file patterns works as well
                 options: {
                     coverageFolder: 'coverageSpecial',
-                    mask: '*.spec.js'
+                    mask: '*.spec.js',
+                    mochaOptions: ['--harmony','--async-only'], // any extra options
+                    istanbulOptions: ['--harmony','--handle-sigint']
                 }
             },
             coveralls: {
                 src: ['test', 'testSpecial', 'testUnique'], // multiple folders also works
                 options: {
-                    coverage:true,
+                    coverage:true, // this will make the grunt.event.on('coverage') event listener to be triggered
                     check: {
                         lines: 75,
                         statements: 75
@@ -80,7 +82,7 @@ module.exports = function(grunt){
     });
 
     grunt.event.on('coverage', function(lcovFileContents, done){
-        // Check below
+        // Check below on the section "The coverage event"
         done();
     });
 
@@ -114,11 +116,11 @@ Mochas parameters, check [http://visionmedia.github.io/mocha/#usage]
 
 ##### _Array_ `options.mochaOptions` (default: `false`)
 
-Any additional mocha parameters, manually set
+An array of strings, any additional mocha parameters, manually set. Eg.: `['--harmony']`
 
 ##### _Array_ `options.istanbulOptions` (default: `false`)
 
-Any additional istanbul parameters, manually set
+An array of strings, any additional istanbul parameters, manually set. Eg.: `['--harmony', '--handle-sigint']`
 
 ##### _String_ `options.scriptPath` (default: `istanbulPath`)
 
@@ -127,8 +129,8 @@ Allows to override the default istanbul path to use another coverage library, su
 ##### _Boolean_ `options.coverage` (default: `false`)
 
 Setting this to true makes the task emit a grunt event `coverage`, that will contain the lcov data from
-the file, containing the following callback `function(lcovcontent, done)`, and you must manually call
-`done()` when you are finished, else the grunt task will hang. See more information below
+the file, containing the following callback `function(lcovcontent, done)`, and **you must manually call
+`done()` when you are finished, else the grunt task will HANG, and won't allow any other tasks to finish**. See more information below
 
 ##### _Boolean_ `options.dryRun` (default: `false`)
 
