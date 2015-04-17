@@ -2,7 +2,7 @@ module.exports = function (grunt){
   'use strict';
 
   var
-    cmd = 'node',
+    cmd = process.execPath,
     path = require('path'),
     mochaPath,
     istanbulPath;
