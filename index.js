@@ -25,13 +25,19 @@ function Istanbul(runner) {
             reporters = ['text-summary', 'html'];
         }
 
+        var reportDir = process.env.ISTANBUL_REPORT_DIR;
+        var opts = {};
+        if (reportDir) {
+            opts.dir = reportDir;
+        }
+
         var cov = global.__coverage__ || {},
             collector = new Collector();
 
         collector.add(cov);
 
         reporters.forEach(function(reporter) {
-            Report.create(reporter).writeReport(collector, true);
+            Report.create(reporter, opts).writeReport(collector, true);
         });
 
     });
