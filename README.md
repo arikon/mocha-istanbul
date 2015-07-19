@@ -5,15 +5,25 @@
 grunt mocha istanbul task
 ==============
 
-[Mocha](http://visionmedia.github.com/mocha/) reporter to generate coverage report of [istanbul](http://gotwarlost.github.com/istanbul/) instrumented code, for grunt
+[Mocha](https://mochajs.org) reporter to generate coverage report of [istanbul](http://gotwarlost.github.com/istanbul/) instrumented code, for grunt
 This doesn't force you to use PhantomJS, or instrument code for server or client-side.
 
 Install
 ==============
 
-1. Install it using `npm install grunt-mocha-istanbul --save-dev`
-2. It needs `mocha`, `grunt` and `istanbul` to be installed locally on your project (aka, having them in your devDependencies)
-3. Call inside Gruntfile.js `grunt.loadNpmTasks('grunt-mocha-istanbul')`
+1. Install needed dependencies using: `npm install grunt mocha istanbul --save-dev`
+2. Install this package using: `npm install grunt-mocha-istanbul --save-dev`
+3. Call inside `Gruntfile.js`: `grunt.loadNpmTasks('grunt-mocha-istanbul')`
+
+Changes from 2.x
+==============
+
+Peer dependencies for `mocha` and `istanbul` have been removed.  You should `npm install` the following modules yourself:
+  
+- `mocha`
+- `istanbul` (or a compatible module; see `scriptPath` usage below)
+
+If using `npm` version < 3, you will need to install `grunt` as well.  
 
 Changes from 1.x
 ==============

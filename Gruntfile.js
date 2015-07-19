@@ -29,7 +29,7 @@ module.exports = function (grunt){
     done();
   });
 
-  grunt.loadNpmTasks('grunt-mocha-istanbul');
+  require('./tasks')(grunt);
 
   grunt.registerTask('default', ['mocha_istanbul']);
 };

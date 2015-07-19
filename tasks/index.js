@@ -3,22 +3,22 @@ module.exports = function (grunt){
 
   var
     cmd = process.execPath,
-    path = require('path'),
-    mochaPath,
-    istanbulPath;
+    path = require('path');
 
-  try {
-    mochaPath = require.resolve('mocha/bin/_mocha');
-  } catch (e) {
-    grunt.log.error('Missing mocha peer dependency');
-    return;
+  function getMochaPath() {
+    try {
+      return require.resolve('mocha/bin/_mocha');
+    } catch (ignored) {
+      grunt.fail.warn('Mocha peer dependency missing.  Please "npm install mocha"');
+    }
   }
 
-  try {
-    istanbulPath = require.resolve('istanbul/lib/cli');
-  } catch (e) {
-    grunt.log.error('Missing istanbul peer dependency');
-    return;
+  function getIstanbulPath() {
+    try {
+      return require.resolve('istanbul/lib/cli');
+    } catch (ignored) {
+      grunt.fail.warn('Istanbul peer dependency missing.  Please "npm install istanbul"');
+    }
   }
 
   function executeCheck(callback, coverageFolder, options) {
@@ -84,7 +84,6 @@ module.exports = function (grunt){
     var
       done = this.async(),
       options = this.options({
-        scriptPath: istanbulPath,
         coverageFolder: 'coverage',
         check: {
           statements: false,
@@ -93,6 +92,11 @@ module.exports = function (grunt){
           branches: false
         }
       });
+
+    // only execute this function if no scriptPath is specified
+    if (!options.scriptPath) {
+      options.scriptPath = getIstanbulPath();
+    }
 
     executeCheck(function (err, result) {
       if (err) { return done(err); }
@@ -115,6 +119,7 @@ module.exports = function (grunt){
     }
 
     var
+      mochaPath = getMochaPath(),
       options = this.options({
         require        : [],
         ui             : false,
@@ -142,14 +147,17 @@ module.exports = function (grunt){
         },
         excludes       : false,
         mochaOptions   : false,
-        istanbulOptions: false,
-        scriptPath     : istanbulPath
+        istanbulOptions: false
       }),
       filesDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]),
       coverageFolder = path.join(process.cwd(), options.coverageFolder),
       rootFolderForCoverage = options.root ? path.join(process.cwd(), options.root) : '.',
       done = this.async(),
       args = [];
+
+    if (!options.scriptPath) {
+      options.scriptPath = getIstanbulPath();
+    }
 
     if (options.harmony) {
       args.push('--harmony');
