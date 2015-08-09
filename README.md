@@ -19,11 +19,11 @@ Changes from 2.x
 ==============
 
 Peer dependencies for `mocha` and `istanbul` have been removed.  You should `npm install` the following modules yourself:
-  
+
 - `mocha`
 - `istanbul` (or a compatible module; see `scriptPath` usage below)
 
-If using `npm` version < 3, you will need to install `grunt` as well.  
+If using `npm` version < 3, you will need to install `grunt` as well.
 
 Changes from 1.x
 ==============
@@ -37,6 +37,28 @@ Changes from 0.2.0
 ==============
 
 * `mocha_istanbul_check` was removed and became part of the options under the `check` object
+
+Compatible tools
+==============
+
+Although it's intended for use with [Istanbul](https://github.com/gotwarlost/istanbul), you can freely
+use this task with other command line compatible tool, by changing the `scriptPath` option, such as:
+
+* [Ibrik](https://github.com/Constellation/ibrik)
+* [Babel Istanbul](https://github.com/ambitioninc/babel-istanbul)
+* [Isparta](https://github.com/douglasduteil/isparta)
+
+```js
+grunt.initConfig({
+    mocha_istanbul: {
+        target: {
+            options: {
+                scriptPath: require.resolve('coverage-tool/the/path/to/bin')
+            }
+        }
+    }
+});
+```
 
 
 Options
