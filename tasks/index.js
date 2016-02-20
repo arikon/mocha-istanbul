@@ -212,7 +212,7 @@ module.exports = function (grunt) {
                 options.mask ||
                 options.noColors
                 ) {
-                grunt.log.error('Warning: mocha.opts exists, but overwriting with options');
+                grunt.log.warn('Warning: mocha.opts exists, but overwriting with options');
             }
         }
 
