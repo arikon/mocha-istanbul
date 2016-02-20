@@ -181,6 +181,16 @@ Type: `Boolean`
 
 Default Value: `false`
 
+### options.nodeOptions
+
+Type: `Array`
+
+Default Value: `false`
+
+An array of strings, any additional node executable parameters, manually set.
+
+Eg.: `nodeOptions: ['--throw-deprecation', '--require', 'some/module']`
+
 ### options.mochaOptions
 
 Type: `Array`

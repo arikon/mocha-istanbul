@@ -145,6 +145,7 @@ module.exports = function (grunt) {
             excludes: false,
             mochaOptions: false,
             istanbulOptions: false,
+            nodeOptions: false,
             nodeExec: process.execPath
         });
         var filesDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]);
@@ -152,6 +153,12 @@ module.exports = function (grunt) {
         var rootFolderForCoverage = options.root ? path.join(options.cwd, options.root) : '.';
         var done = this.async();
         var args = [];
+
+        if (options.nodeOptions && options.nodeOptions.length) {
+            options.nodeOptions.forEach(function(nodeOption){
+                args.push(nodeOption);
+            });
+        }
 
         if (!options.scriptPath) {
             options.scriptPath = getIstanbulPath();
