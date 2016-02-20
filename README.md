@@ -129,51 +129,61 @@ Mochas parameters, check [https://mochajs.org/#usage](https://mochajs.org/#usage
 ### options.require
 
 Type: `Array`
+
 Default Value: `[]`
 
 ### options.ui
 
 Type: `Boolean`
+
 Default Value: `false`
 
 ### options.globals
 
 Type: `Array`
+
 Default Value: `[]`
 
 ### options.reporter
 
 Type: `String`
+
 Default Value: `false`
 
 ### options.timeout
 
 Type: `Number`
+
 Default Value: `false`
 
 ### options.slow
 
 Type: `Boolean`
+
 Default Value: `false`
 
 ### options.grep
 
 Type: `String`
+
 Default Value: `false`
 
 ### options.recursive
 
 Type: `Boolean`
+
 Default Value: `false`
 
 ### options.noColors
 
 Type: `Boolean`
+
 Default Value: `false`
 
 ### options.mochaOptions
 
 Type: `Array`
+
 Default Value: `false`
 
 An array of strings, any additional mocha parameters, manually set.
@@ -183,6 +193,7 @@ Eg.: `mochaOptions: ['--harmony', '-s', '100']`
 ### options.istanbulOptions
 
 Type: `Array`
+
 Default Value: `false`
 
 An array of strings, any additional istanbul parameters, manually set.
@@ -191,6 +202,7 @@ Eg.: `istanbulOptions: ['--harmony', '--handle-sigint', 'some=value', '-s', 'val
 ### options.scriptPath
 
 Type: `String`
+
 Default Value: `'istanbulPath'`
 
 Allows to override the default istanbul path to use another coverage library, such as [ibrik](https://www.npmjs.com/package/ibrik).
@@ -199,6 +211,7 @@ Need to set the full path to the bin (script that accepts stdin arguments) and i
 ### options.coverage
 
 Type: `Boolean`
+
 Default Value: `false`
 
 Setting this to `true` **makes the task emit a grunt event `coverage`**, that will contain the lcov data from
@@ -209,6 +222,7 @@ the file, containing the following callback `function(lcovcontent, done)`, and *
 ### options.dryRun
 
 Type: `Boolean`
+
 Default Value: `false`
 
 Spits out the command line that would be called, just to make sure everything is alright
@@ -216,6 +230,7 @@ Spits out the command line that would be called, just to make sure everything is
 ### options.nodeExec
 
 Type: `String`
+
 Default Value: `process.execPath`
 
 Sets the node executable that will invoke Istanbul and Mocha. Useful for setting something else than node, like `babel-node`
@@ -223,6 +238,7 @@ Sets the node executable that will invoke Istanbul and Mocha. Useful for setting
 ### options.cwd
 
 Type: `String`
+
 Default Value: `process.cwd()`
 
 Sets the current working directly. Note that changing this might have unexpected results, since the plugin and Grunt expects
@@ -231,6 +247,7 @@ to be working on the same level of `Gruntfile.js`
 ### options.excludes
 
 Type: `Array`
+
 Default Value: `false`
 
 Setting this exclude files from coverage report, check `istanbul help cover`. You may use glob matching in here.
@@ -238,6 +255,7 @@ Setting this exclude files from coverage report, check `istanbul help cover`. Yo
 ### options.mask
 
 Type: `String`
+
 Default Value: `false`
 
 The mask for the tests to be ran. By default, mocha will execute the `test` folder and all test files.
@@ -246,6 +264,7 @@ Will override any files specified in `src` and instead use the mask on those fil
 ### options.quiet
 
 Type: `Boolean`
+
 Default Value: `false`
 
 Suppresses the output from Mocha and Istanbul
@@ -253,6 +272,7 @@ Suppresses the output from Mocha and Istanbul
 ### options.coverageFolder
 
 Type: `String`
+
 Default Value: `'coverage'`
 
 Name of the output of the coverage folder
@@ -260,6 +280,7 @@ Name of the output of the coverage folder
 #### options.reportFormats
 
 Type: `Array`
+
 Default Value: `['lcov']`
 
 Name of report formats. You can specify more than one. If you intend to use the `coverage` option to
@@ -279,6 +300,7 @@ file to be created.
 ### options.root
 
 Type: `String`
+
 Default Value: `false`
 
 The root path to look for files to instrument, defaults to `.`. Can help to exclude directories that are not
@@ -287,14 +309,17 @@ part of the code whose coverage should be checked.
 ### options.print
 
 Type: `String`
+
 Default Value: `false`
 
 The type of report to print to console. Can be one of 'summary', 'detail', 'both', or 'none'. By
-default, Istanbul will print the 'summary' report.
+
+Default, Istanbul will print the 'summary' report.
 
 ### options.check.statements
 
 Type: `Number`
+
 Default Value: `false`
 
 Number of statements threshold to consider the coverage valid
@@ -302,6 +327,7 @@ Number of statements threshold to consider the coverage valid
 ### options.check.lines
 
 Type: `Number`
+
 Default Value: `false`
 
 Number of lines threshold to consider the coverage valid
@@ -309,6 +335,7 @@ Number of lines threshold to consider the coverage valid
 ### options.check.branches
 
 Type: `Number`
+
 Default Value: `false`
 
 Number of branches threshold to consider the coverage valid
@@ -316,6 +343,7 @@ Number of branches threshold to consider the coverage valid
 ### options.check.functions
 
 Type: `Number`
+
 Default Value: `false`
 
 Number of functions threshold to consider the coverage valid
