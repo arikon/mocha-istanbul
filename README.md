@@ -208,6 +208,7 @@ Type: `Array`
 Default Value: `false`
 
 An array of strings, any additional istanbul parameters, manually set.
+
 Eg.: `istanbulOptions: ['--harmony', '--handle-sigint', 'some=value', '-s', 'value']`
 
 ### options.scriptPath
