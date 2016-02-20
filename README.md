@@ -5,6 +5,7 @@
 # grunt mocha istanbul task
 
 > [Mocha](https://mochajs.org) reporter to generate coverage report of [istanbul](http://gotwarlost.github.com/istanbul/) instrumented code, for grunt
+
 > This doesn't force you to use PhantomJS, or instrument code for server or client-side.
 
 ## Getting Started
@@ -290,11 +291,17 @@ file to be created.
 [Supported formats](https://github.com/gotwarlost/istanbul#the-report-command):
 
 > html - produces a bunch of HTML files with annotated source code
+
 > lcovonly - produces an lcov.info file
+
 > lcov - produces html + lcov files. This is the default format
+
 > cobertura - produces a cobertura-coverage.xml file for easy Hudson integration
+
 > text-summary - produces a compact text summary of coverage, typically to console
+
 > text - produces a detailed text table with coverage for all files
+
 > teamcity - produces service messages to report code coverage to TeamCity
 
 ### options.root
