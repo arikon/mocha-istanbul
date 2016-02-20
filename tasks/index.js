@@ -19,6 +19,41 @@ module.exports = function (grunt) {
         }
     }
 
+    function defaultOptions() {
+        return {
+            require: [],
+            ui: false,
+            globals: [],
+            reporter: false,
+            timeout: false,
+            coverage: false,
+            slow: false,
+            grep: false,
+            dryRun: false,
+            quiet: false,
+            recursive: false,
+            mask: false,
+            root: false,
+            print: false,
+            noColors: false,
+            harmony: false,
+            coverageFolder: 'coverage',
+            cwd: process.cwd(),
+            reportFormats: ['lcov'],
+            check: {
+                statements: false,
+                lines: false,
+                functions: false,
+                branches: false
+            },
+            excludes: false,
+            mochaOptions: false,
+            istanbulOptions: false,
+            nodeOptions: false,
+            nodeExec: process.execPath
+        };
+    }
+
     function executeCheck(callback, coverageFolder, options) {
         var args = [], check = options.check;
 
@@ -80,15 +115,7 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('istanbul_check_coverage', 'Solo task for checking coverage over different or many files.', function () {
         var done = this.async();
-        var options = this.options({
-            coverageFolder: 'coverage',
-            check: {
-                statements: false,
-                lines: false,
-                functions: false,
-                branches: false
-            }
-        });
+        var options = this.options(defaultOptions());
 
         // only execute this function if no scriptPath is specified
         if (!options.scriptPath) {
@@ -116,38 +143,7 @@ module.exports = function (grunt) {
         }
 
         var mochaPath = getMochaPath();
-        var options = this.options({
-            require: [],
-            ui: false,
-            globals: [],
-            reporter: false,
-            timeout: false,
-            coverage: false,
-            slow: false,
-            grep: false,
-            dryRun: false,
-            quiet: false,
-            recursive: false,
-            mask: false,
-            root: false,
-            print: false,
-            noColors: false,
-            harmony: false,
-            coverageFolder: 'coverage',
-            cwd: process.cwd(),
-            reportFormats: ['lcov'],
-            check: {
-                statements: false,
-                lines: false,
-                functions: false,
-                branches: false
-            },
-            excludes: false,
-            mochaOptions: false,
-            istanbulOptions: false,
-            nodeOptions: false,
-            nodeExec: process.execPath
-        });
+        var options = this.options(defaultOptions());
         var filesDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]);
         var coverageFolder = path.join(options.cwd, options.coverageFolder);
         var rootFolderForCoverage = options.root ? path.join(options.cwd, options.root) : '.';
