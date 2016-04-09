@@ -1,14 +1,14 @@
 {
   "name"            : "grunt-mocha-istanbul",
-  "version"         : "4.0.1",
+  "version"         : "4.0.2",
   "description"     : "Almost config-free Istanbul code coverage reporter for Mocha usage in Grunt",
   "peerDependencies": {
-    "grunt": "^1.0.0"
+    "grunt": ">=0.4.0"
   },
   "devDependencies": {
     "grunt": "^1.0.0",
-    "mocha": ">=1.x.x",
-    "istanbul": "0.x.x"
+    "mocha": "^2.4.5",
+    "istanbul": "^0.4.3"
   },
   "repository"      : {
     "type": "git",
