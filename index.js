@@ -1,5 +1,5 @@
-var ISTANBUL = require('istanbul'),
-
+var fs = require('fs'),
+    ISTANBUL = require('istanbul'),
     Report = ISTANBUL.Report,
     Collector = ISTANBUL.Collector;
 
@@ -25,6 +25,13 @@ function Istanbul(runner) {
             reporters = ['text-summary', 'html'];
         }
 
+        var coverage;
+        if (process.env.ISTANBUL_COVERAGE) {
+            coverage = process.env.ISTANBUL_COVERAGE;
+        } else {
+            coverage = 'coverage.json';
+        }
+
         var reportDir = process.env.ISTANBUL_REPORT_DIR;
         var opts = {};
         if (reportDir) {
@@ -35,6 +42,8 @@ function Istanbul(runner) {
             collector = new Collector();
 
         collector.add(cov);
+
+        fs.writeFileSync(coverage, JSON.stringify(cov), 'utf8');
 
         reporters.forEach(function(reporter) {
             Report.create(reporter, opts).writeReport(collector, true);
