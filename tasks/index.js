@@ -7,7 +7,7 @@ module.exports = function (grunt) {
         try {
             return require.resolve('mocha/bin/_mocha');
         } catch (ignored) {
-            grunt.fail.warn('Mocha peer dependency missing.  Please "npm install mocha"');
+            grunt.fail.fatal('Mocha peer dependency missing.  Please "npm install mocha"');
         }
     }
 
@@ -15,7 +15,15 @@ module.exports = function (grunt) {
         try {
             return require.resolve('istanbul/lib/cli');
         } catch (ignored) {
-            grunt.fail.warn('Istanbul peer dependency missing.  Please "npm install istanbul"');
+            grunt.fail.fatal('Istanbul peer dependency missing.  Please "npm install istanbul"');
+        }
+    }
+
+    function arrayOfStrings(options, name, exec) {
+        if (Array.isArray(options)) {
+            exec(options);
+        } else {
+            grunt.fail.fatal(name + ' must be an array of strings');
         }
     }
 
@@ -150,10 +158,12 @@ module.exports = function (grunt) {
         var done = this.async();
         var args = [];
 
-        if (options.nodeOptions && options.nodeOptions.length) {
-            options.nodeOptions.forEach(function(nodeOption){
-                args.push(nodeOption);
-            });
+        if (options.nodeOptions) {
+            arrayOfStrings(options.nodeOptions, 'options.nodeOptions', function(options){
+                options.forEach(function(nodeOption){
+                    args.push(nodeOption);
+                });
+            })
         }
 
         if (!options.scriptPath) {
@@ -167,19 +177,20 @@ module.exports = function (grunt) {
         args.push(options.scriptPath);        // ie. node ./node_modules/istanbul/lib/cli.js or another script name
         args.push('cover');                   // node <scriptPath> cover
 
-        if (typeof options.require === 'string') {
-            options.require = [options.require];
-        }
 
-
-        if (options.excludes && options.excludes.length) {
-            options.excludes.forEach(function (excluded) {
-                args.push('-x');
-                args.push(excluded);
-            });
+        if (options.excludes) {
+            arrayOfStrings(options.excludes, 'options.excludes', function(options){
+                options.forEach(function (excluded) {
+                    grunt.file.expand({nonull: true}, excluded).forEach(function(expanded){
+                        args.push('-x');
+                        args.push(expanded);
+                    })
+                });
+            })
         }
 
         args.push('--dir=' + coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
+
         if (options.root) {
             args.push('--root=' + rootFolderForCoverage);
         }
@@ -191,10 +202,12 @@ module.exports = function (grunt) {
             args.push('--report=' + format);
         });
 
-        if (options.istanbulOptions && options.istanbulOptions.length) {
-            options.istanbulOptions.forEach(function (opt) {
-                args.push(opt);
-            });
+        if (options.istanbulOptions) {
+            arrayOfStrings(options.istanbulOptions, 'options.istanbulOptions', function(options){
+                options.forEach(function (opt) {
+                    args.push(opt);
+                });
+            })
         }
 
         args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
@@ -222,27 +235,37 @@ module.exports = function (grunt) {
         }
 
         if (options.require) {
-            options.require.forEach(function (require) {
-                args.push('--require');
-                args.push(require);
+            arrayOfStrings(options.require, 'options.require', function(options){
+                options.forEach(function (require) {
+                    grunt.file.expand(require).forEach(function(expanded){
+                        args.push('--require');
+                        args.push(expanded);
+                    })
+                });
             });
         }
+
         if (options.ui) {
             args.push('--ui');
             args.push(options.ui);
         }
+
         if (options.noColors) {
             args.push('--no-colors');
         }
+
         if (options.reporter) {
             args.push('--reporter');
             args.push(options.reporter);
         }
 
-        if (options.globals.length) {
-            args.push('--globals');
-            args.push(options.globals.join(','));
+        if (options.globals) {
+            arrayOfStrings(options.globals, 'options.globals', function(options){
+                args.push('--globals');
+                args.push(options.join(','));
+            });
         }
+
         if (options.slow) {
             args.push('--slow');
             args.push(options.slow);
@@ -264,10 +287,12 @@ module.exports = function (grunt) {
             });
         }
 
-        if (options.mochaOptions && options.mochaOptions.length) {
-            options.mochaOptions.forEach(function (opt) {
-                args.push(opt);
-            });
+        if (options.mochaOptions) {
+            arrayOfStrings(options.mochaOptions, 'options.mochaOptions', function(options){
+                options.forEach(function (opt) {
+                    args.push(opt);
+                });
+            })
         }
 
         args = args.concat(masked);
