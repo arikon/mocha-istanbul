@@ -28,12 +28,45 @@ grunt.initConfig({
     mocha_istanbul: {
         target: {
             options: {
-                scriptPath: require.resolve('coverage-tool/the/path/to/bin')
+                scriptPath: require.resolve('coverage-tool/the/path/to/bin'),
             }
         }
     }
 });
 ```
+
+#### Running ES2015+ tests with ES2015+ sources (through Babel-CLI)
+
+Before anything, install babel required stuff.
+
+```
+npm install babel-cli babel-presets-2015 babel-register
+```
+
+Define your .babelrc file on the same level as Gruntfile.js
+
+```json
+{
+    "presets": ["es2015"]
+}
+```
+
+Then you'll need to use Isparta, until Istanbul 1.0 is released. (or you can use 1.0.0-alpha.2)
+
+```js
+{
+    mocha_istanbul: {
+        src: 'test',
+        options: {
+            scriptPath: require.resolve('isparta/bin/isparta'),
+            nodeExec: require.resolve('.bin/babel-node') // for Windows, you MUST use .bin/babel-node.cmd instead
+            mochaOptions: ['--compilers', 'js:babel-register'], // if you are writing your tests with ES2015+ as well
+        }
+    }
+}
+```
+
+NOTE: for some unknown reason, using babel-node as nodeExec, with `print` option makes it fail.
 
 ### Usage Examples
 
@@ -107,6 +140,8 @@ The `check` will fail the build if the thresholds are not met. It's a great poss
 
 Mochas parameters, check [https://mochajs.org/#usage](https://mochajs.org/#usage)
 
+### Mocha options
+
 ### options.require
 
 Type: `Array`
@@ -171,6 +206,15 @@ An array of strings, any additional node executable parameters, manually set.
 
 Eg.: `nodeOptions: ['--throw-deprecation', '--require', 'some/module']`
 
+### options.mask
+
+Type: `String`
+
+Default Value: `false`
+
+The mask for the tests to be ran. By default, mocha will execute the `test` folder and all test files.
+Will override any files specified in `src` and instead use the mask on those files' folders.
+
 ### options.mochaOptions
 
 Type: `Array`
@@ -181,60 +225,7 @@ An array of strings, any additional mocha parameters, manually set.
 
 Eg.: `mochaOptions: ['--harmony', '-s', '100']`
 
-### options.istanbulOptions
-
-Type: `Array`
-
-Default Value: `false`
-
-An array of strings, any additional istanbul parameters, manually set.
-
-Eg.: `istanbulOptions: ['--harmony', '--handle-sigint', 'some=value', '-s', 'value']`
-
-### options.scriptPath
-
-Type: `String`
-
-Default Value: `'istanbulPath'`
-
-Allows to override the default istanbul path to use another coverage library, such as [ibrik](https://www.npmjs.com/package/ibrik).
-Need to set the full path to the bin (script that accepts stdin arguments) and is compatible with `cover`.
-
-### options.coverage
-
-Type: `Boolean`
-
-Default Value: `false`
-
-Setting this to `true` **makes the task emit a grunt event `coverage`**, that will contain the lcov data from
-the file, containing the following callback `function(lcovcontent, done)`, and **you must manually call
-`done()` when you are finished, else the grunt task will HANG, and won't allow any other tasks to finish**.
-[See more information below](#the-coverage-event)
-
-### options.dryRun
-
-Type: `Boolean`
-
-Default Value: `false`
-
-Spits out the command line that would be called, just to make sure everything is alright
-
-### options.nodeExec
-
-Type: `String`
-
-Default Value: `process.execPath`
-
-Sets the node executable that will invoke Istanbul and Mocha. Useful for setting something else than node, like `babel-node`
-
-### options.cwd
-
-Type: `String`
-
-Default Value: `process.cwd()`
-
-Sets the current working directly. Note that changing this might have unexpected results, since the plugin and Grunt expects
-to be working on the same level of `Gruntfile.js`
+### Istanbul options
 
 ### options.excludes
 
@@ -244,22 +235,23 @@ Default Value: `false`
 
 Setting this exclude files from coverage report, check `istanbul help cover`. You may use glob matching in here.
 
-### options.mask
+### options.includes
 
-Type: `String`
-
-Default Value: `false`
-
-The mask for the tests to be ran. By default, mocha will execute the `test` folder and all test files.
-Will override any files specified in `src` and instead use the mask on those files' folders.
-
-### options.quiet
-
-Type: `Boolean`
+Type: `Array`
 
 Default Value: `false`
 
-Suppresses the output from Mocha and Istanbul
+Setting this includes only those files in the coverage report, check `istanbul help cover`. You may use glob matching in here.
+
+### options.istanbulOptions
+
+Type: `Array`
+
+Default Value: `false`
+
+An array of strings, any additional istanbul parameters, manually set.
+
+Eg.: `istanbulOptions: ['--harmony', '--handle-sigint', 'some=value', '-s', 'value']`
 
 ### options.coverageFolder
 
@@ -313,6 +305,61 @@ Default Value: `false`
 The type of report to print to console. Can be one of 'summary', 'detail', 'both', or 'none'. By
 
 Default, Istanbul will print the 'summary' report.
+
+### Task options
+
+### options.scriptPath
+
+Type: `String`
+
+Default Value: `'istanbulPath'`
+
+Allows to override the default istanbul path to use another coverage library, such as [ibrik](https://www.npmjs.com/package/ibrik).
+Need to set the full path to the bin (script that accepts stdin arguments) and is compatible with `cover`.
+
+### options.coverage
+
+Type: `Boolean`
+
+Default Value: `false`
+
+Setting this to `true` **makes the task emit a grunt event `coverage`**, that will contain the lcov data from
+the file, containing the following callback `function(lcovcontent, done)`, and **you must manually call
+`done()` when you are finished, else the grunt task will HANG, and won't allow any other tasks to finish**.
+[See more information below](#the-coverage-event)
+
+### options.dryRun
+
+Type: `Boolean`
+
+Default Value: `false`
+
+Spits out the command line that would be called, just to make sure everything is alright
+
+### options.nodeExec
+
+Type: `String`
+
+Default Value: `process.execPath`
+
+Sets the node executable that will invoke Istanbul and Mocha. Useful for setting something else than node, like `babel-node`
+
+### options.cwd
+
+Type: `String`
+
+Default Value: `process.cwd()`
+
+Sets the current working directly. Note that changing this might have unexpected results, since the plugin and Grunt expects
+to be working on the same level of `Gruntfile.js`
+
+### options.quiet
+
+Type: `Boolean`
+
+Default Value: `false`
+
+Suppresses the output from Mocha and Istanbul
 
 ### options.check.statements
 

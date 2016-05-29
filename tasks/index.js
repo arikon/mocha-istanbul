@@ -21,7 +21,11 @@ module.exports = function (grunt) {
 
     function arrayOfStrings(options, name, exec) {
         if (Array.isArray(options)) {
-            exec(options);
+            if (options.length) {
+                exec(options);
+            } else {
+                grunt.verbose.ok('Skipping empty ' + name + ' array')
+            }
         } else {
             grunt.fail.fatal(name + ' must be an array of strings');
         }
@@ -36,6 +40,7 @@ module.exports = function (grunt) {
             timeout: false,
             coverage: false,
             slow: false,
+            includes: false,
             grep: false,
             dryRun: false,
             quiet: false,
@@ -152,7 +157,7 @@ module.exports = function (grunt) {
 
         var mochaPath = getMochaPath();
         var options = this.options(defaultOptions());
-        var filesDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]);
+        var testsDir = grunt.file.isDir(this.filesSrc[0]) ? this.filesSrc[0] : path.dirname(this.filesSrc[0]);
         var coverageFolder = path.join(options.cwd, options.coverageFolder);
         var rootFolderForCoverage = options.root ? path.join(options.cwd, options.root) : '.';
         var done = this.async();
@@ -189,17 +194,28 @@ module.exports = function (grunt) {
             })
         }
 
-        args.push('--dir=' + coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
+        if (options.includes) {
+            arrayOfStrings(options.includes, 'options.includes', function(options){
+                options.forEach(function (included) {
+                    grunt.file.expand({nonull: true}, included).forEach(function(expanded){
+                        args.push('-i');
+                        args.push(expanded);
+                    })
+                });
+            })
+        }
+
+        args.push('--dir', coverageFolder); // node ./node_modules/istanbul/cli.js --dir=coverage
 
         if (options.root) {
-            args.push('--root=' + rootFolderForCoverage);
+            args.push('--root', rootFolderForCoverage);
         }
         if (options.print) {
-            args.push('--print=' + options.print);
+            args.push('--print', options.print);
         }
 
         options.reportFormats.forEach(function (format) {
-            args.push('--report=' + format);
+            args.push('--report', format);
         });
 
         if (options.istanbulOptions) {
@@ -213,7 +229,7 @@ module.exports = function (grunt) {
         args.push(mochaPath);                 // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha
         args.push('--');                      // node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --
 
-        if (grunt.file.exists(path.join(options.cwd, filesDir, 'mocha.opts'))) {
+        if (grunt.file.exists(options.cwd, testsDir, 'mocha.opts')) {
             if (
                 options.require.length ||
                 options.globals.length ||

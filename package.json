@@ -8,7 +8,8 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "mocha": "^2.5.3",
-    "istanbul": "^0.4.3"
+    "istanbul": "^0.4.3",
+    "babel-cli": "^6.9.0"
   },
   "repository"      : {
     "type": "git",

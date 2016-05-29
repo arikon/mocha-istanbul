@@ -4,7 +4,9 @@
 
 - Wrong non-array options now fail the task
 - Better flexibility within the options for ES6 tests and source files
-- Will try to manually expand minimatch patterns instead of relying on mocha and istanbul ones
+- Will try to manually expand minimatch patterns instead of relying on mocha and istanbul ones, so it's easier to debug when using `--verbose`
+- `harmony` option is gone, you should select where you'd want it `nodeOptions`, `istanbulOptions`, etc
+- Added the `include` option, to filter out the covered information
 
 ### Changes from 2.x
 

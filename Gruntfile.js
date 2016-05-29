@@ -2,7 +2,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         mocha_istanbul: {
             target: {
-                src: 'test',
+                src: 'test/*.test.js',
                 options: {
                     //coverageFolder: 'lcov',
                     coverage: true,
@@ -10,16 +10,34 @@ module.exports = function (grunt) {
                     dryRun: false,
                     //root: './test',
                     //root: './tasks',
-                    print: 'detail',
+                    //print: 'detail',
                     check: {
                         lines: 1
                     },
                     excludes: ['test/excluded*.js'],
-                    nodeExec: 'babel-node',
                     mochaOptions: ['--bail', '--debug-brk'],
                     istanbulOptions: ['--default-excludes'],
                     reporter: 'spec',
-                    reportFormats: ['lcovonly']
+                    reportFormats: ['html','lcovonly']
+                }
+            },
+            babel: {
+                src: 'test/*.es6.js',
+                options: {
+                    nodeExec: require.resolve('.bin/babel-node.cmd'),
+                    reportFormats: ['html'],
+                    //root: './es6',
+                    mochaOptions: ['--compilers', 'js:babel-register'],
+                }
+            },
+            isparta: {
+                src: 'test/*.es5.js',
+                options: {
+                    nodeExec: require.resolve('.bin/babel-node.cmd'),
+                    reportFormats: ['html'],
+                    istanbulOptions: ['--verbose'],
+                    root: 'es6',
+                    scriptPath: require.resolve('isparta/bin/isparta'),
                 }
             }
         }
