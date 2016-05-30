@@ -14,9 +14,9 @@ module.exports = function (grunt) {
                     check: {
                         lines: 1
                     },
+                    require: ['test/*1.js'],
                     excludes: ['test/excluded*.js'],
                     mochaOptions: ['--bail', '--debug-brk'],
-                    istanbulOptions: ['--default-excludes'],
                     reporter: 'spec',
                     reportFormats: ['html','lcovonly']
                 }
@@ -26,7 +26,8 @@ module.exports = function (grunt) {
                 options: {
                     nodeExec: require.resolve('.bin/babel-node.cmd'),
                     reportFormats: ['html'],
-                    //root: './es6',
+                    istanbulOptions: ['--verbose'],
+                    root: 'es6',
                     mochaOptions: ['--compilers', 'js:babel-register'],
                 }
             },

@@ -253,7 +253,7 @@ module.exports = function (grunt) {
         if (options.require) {
             arrayOfStrings(options.require, 'options.require', function(options){
                 options.forEach(function (require) {
-                    grunt.file.expand(require).forEach(function(expanded){
+                    grunt.file.expand({nonull: true}, require).forEach(function(expanded){
                         args.push('--require');
                         args.push(expanded);
                     })
