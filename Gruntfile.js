@@ -15,7 +15,7 @@ module.exports = function (grunt) {
                         lines: 1
                     },
                     require: ['test/*1.js'],
-                    excludes: ['test/excluded*.js'],
+                    excludes: ['test/excluded*.js', '**/other.js'],
                     mochaOptions: ['--bail', '--debug-brk'],
                     reporter: 'spec',
                     reportFormats: ['html','lcovonly']
@@ -24,21 +24,21 @@ module.exports = function (grunt) {
             babel: {
                 src: 'test/*.es6.js',
                 options: {
-                    nodeExec: require.resolve('.bin/babel-node.cmd'),
+                    nodeExec: require.resolve('.bin/babel-node'),
                     reportFormats: ['html'],
                     istanbulOptions: ['--verbose'],
                     root: 'es6',
-                    mochaOptions: ['--compilers', 'js:babel-register'],
+                    mochaOptions: ['--compilers', 'js:babel-register']
                 }
             },
             isparta: {
                 src: 'test/*.es5.js',
                 options: {
-                    nodeExec: require.resolve('.bin/babel-node.cmd'),
+                    nodeExec: require.resolve('.bin/babel-node'),
                     reportFormats: ['html'],
                     istanbulOptions: ['--verbose'],
                     root: 'es6',
-                    scriptPath: require.resolve('isparta/bin/isparta'),
+                    scriptPath: require.resolve('isparta/bin/isparta')
                 }
             }
         }

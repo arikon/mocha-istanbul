@@ -186,10 +186,8 @@ module.exports = function (grunt) {
         if (options.excludes) {
             arrayOfStrings(options.excludes, 'options.excludes', function(options){
                 options.forEach(function (excluded) {
-                    grunt.file.expand({nonull: true}, excluded).forEach(function(expanded){
-                        args.push('-x');
-                        args.push(expanded);
-                    })
+                    args.push('-x');
+                    args.push(excluded);
                 });
             })
         }
@@ -197,10 +195,8 @@ module.exports = function (grunt) {
         if (options.includes) {
             arrayOfStrings(options.includes, 'options.includes', function(options){
                 options.forEach(function (included) {
-                    grunt.file.expand({nonull: true}, included).forEach(function(expanded){
-                        args.push('-i');
-                        args.push(expanded);
-                    })
+                    args.push('-i');
+                    args.push(included);
                 });
             })
         }
