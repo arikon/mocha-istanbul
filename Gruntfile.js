@@ -1,4 +1,6 @@
 module.exports = function (grunt) {
+    var nodeExec = require.resolve('.bin/babel-node' + (process.platform === 'win32' ? '.cmd' : ''));
+
     grunt.initConfig({
         mocha_istanbul: {
             target: {
@@ -24,7 +26,7 @@ module.exports = function (grunt) {
             babel: {
                 src: 'test/*.es6.js',
                 options: {
-                    nodeExec: require.resolve('.bin/babel-node'),
+                    nodeExec: nodeExec,
                     reportFormats: ['html'],
                     istanbulOptions: ['--verbose'],
                     root: 'es6',
@@ -34,11 +36,11 @@ module.exports = function (grunt) {
             isparta: {
                 src: 'test/*.es5.js',
                 options: {
-                    nodeExec: require.resolve('.bin/babel-node'),
+                    nodeExec: nodeExec,
                     reportFormats: ['html'],
                     istanbulOptions: ['--verbose'],
                     root: 'es6',
-                    scriptPath: require.resolve('isparta/bin/isparta')
+                    scriptPath: require.resolve('isparta/lib/cli')
                 }
             }
         }

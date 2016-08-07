@@ -1,5 +1,7 @@
 [![Dependency Status](https://david-dm.org/pocesar/grunt-mocha-istanbul.png?theme=shields.io)](https://david-dm.org/pocesar/grunt-mocha-istanbul)
 
+[![Build Status](https://travis-ci.org/pocesar/grunt-mocha-istanbul.svg?branch=master)](https://travis-ci.org/pocesar/grunt-mocha-istanbul)
+
 [![NPM](https://nodei.co/npm/grunt-mocha-istanbul.png?downloads=true&stars=true)](https://nodei.co/npm/grunt-mocha-istanbul/)
 
 # grunt mocha istanbul task
@@ -28,7 +30,7 @@ grunt.initConfig({
     mocha_istanbul: {
         target: {
             options: {
-                scriptPath: require.resolve('coverage-tool/the/path/to/bin'),
+                scriptPath: require.resolve('coverage-tool/the/path/to/bin'), // usually in nameofcoveragelibrary/lib/cli
             }
         }
     }
@@ -58,7 +60,7 @@ Then you'll need to use Isparta, until Istanbul 1.0 is released. (or you can use
     mocha_istanbul: {
         src: 'test',
         options: {
-            scriptPath: require.resolve('isparta/bin/isparta'),
+            scriptPath: require.resolve('isparta/lib/cli'),
             nodeExec: require.resolve('.bin/babel-node') // for Windows, you MUST use .bin/babel-node.cmd instead
             mochaOptions: ['--compilers', 'js:babel-register'], // if you are writing your tests with ES2015+ as well
         }
