@@ -1,7 +1,7 @@
 mocha-istanbul
 ==============
 
-[Mocha](http://visionmedia.github.com/mocha/) reporter to generate coverage report of [istanbul](http://gotwarlost.github.com/istanbul/) instrumented code.
+[Mocha](http://mochajs.org/) reporter to generate coverage report of [istanbul](http://gotwarlost.github.com/istanbul/) instrumented code.
 
 Usage
 -----
